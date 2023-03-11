@@ -14,7 +14,7 @@ class App extends Component {
   }
   
   pokeInput(event) {
-    this.setState({ pokemon: event.target.value })
+    this.setState({ pokemon: event.target.value.toLowerCase() })
   };
   search(){
     if(this.state.pokemon.length===0){this.search()}
