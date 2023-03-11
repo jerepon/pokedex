@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import Menu from './Menu';
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+     pokemon:"",
+    data:[],
+     
+      
+    };
+    this.pokeInput = this.pokeInput.bind(this);
+    this.search = this.search.bind(this);
+  }
+  
+  pokeInput(event) {
+    this.setState({ pokemon: event.target.value })
+  };
+  search(){
+    if(this.state.pokemon.length===0){this.search()}
+    else{
+    this.setState(prevState => ({
+      data: [...prevState.data, this.state.pokemon]
+    }))};
+  }
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  render() {
+   
+    return (
+      <div>
+        <h1>Pokedex</h1>
+        <hr></hr>
+        <input type="text" placeholder='Indique el pokemon' onChange={this.pokeInput}></input>
+       <button onClick={this.search}>Buscar</button>
+
+       <Menu  personajes={this.state.data}/>
+      
+      </div>
+    );
+  }
 }
 
 export default App;
