@@ -10,9 +10,13 @@ class App extends Component {
       pokemon: "",
       data: [],
       suggestions: [],
+      names: []
     };
     this.pokeInput = this.pokeInput.bind(this);
     this.search = this.search.bind(this);
+    this.erase = this.erase.bind(this);
+    this.handleSuggestionClick = this.handleSuggestionClick.bind(this);
+    this.handleRandomClick = this.handleRandomClick.bind(this);
   }
 
   componentDidMount() {
@@ -40,15 +44,37 @@ class App extends Component {
     };
   }
 
+  erase() {
+    this.setState(prevState => ({
+      data: []
+    }))
+  }
+
   handleSuggestionClick(suggestion) {
     this.setState({ pokemon: suggestion, suggestions: [] });
+  }
+
+  handleRandomClick() {
+    const randomIndex = Math.floor(Math.random() * this.state.names.length);
+    const randomPokemon = this.state.names[randomIndex];
+
+    this.setState(prevState => ({
+      data: [...prevState.data, randomPokemon]
+    }), () => {
+      if (this.state.data.length < 6) {
+        setTimeout(() => {
+          this.handleRandomClick();
+        }, 10);
+      }
+     
+    });
   }
 
   render() {
     const { pokemon, data, suggestions } = this.state;
 
     return (
-      <div>
+      <div className='negro'>
         <h1>Pokedex</h1>
         <hr></hr>
         <div className="autocomplete">
@@ -62,9 +88,10 @@ class App extends Component {
           </div>
         </div>
         <button className="search-button" onClick={this.search}>Buscar</button>
+        <button onClick={this.erase}>Limpiar</button>
+        <button onClick={this.handleRandomClick}>Generar Equipo al Azar</button>
 
         <Menu personajes={data} />
-
       </div>
     );
   }
